@@ -3,12 +3,10 @@ using Microsoft.Extensions.Hosting;
 
 namespace Gab.WebAppNet5
 {
-  public class Program
-  {
-    public static void Main(string[] args)
+    public static class Program
     {
-      CreateHostBuilder(args).Build().Run();
-    }
+    public static void Main(string[] args) =>
+        CreateHostBuilder(args).Build().Run();
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
@@ -16,5 +14,5 @@ namespace Gab.WebAppNet5
             {
               webBuilder.UseStartup<Startup>();
             });
-  }
+    }
 }

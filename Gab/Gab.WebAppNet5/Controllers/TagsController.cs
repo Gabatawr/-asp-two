@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,150 +12,119 @@ namespace Gab.WebAppNet5.Controllers
     public class TagsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public TagsController(ApplicationDbContext context)
-        {
+        public TagsController(ApplicationDbContext context) =>
             _context = context;
-        }
 
-        // GET: Tags
-        public async Task<IActionResult> Index()
-        {
-            return View(await _context.Tags
-                //.Include(t => t.Products)
-                .ToListAsync());
-        }
+        // Index
+        public async Task<IActionResult> Index() =>
+            View(await _context.Tags.ToListAsync());
 
-        // GET: Tags/Details/5
+        // Details
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tag = await _context.Tags
-                //.Include(t => t.Products)
                 .FirstOrDefaultAsync(t => t.Id == id);
+
             if (tag == null)
-            {
                 return NotFound();
-            }
 
             return View(tag);
         }
 
-        // GET: Tags/Create
+        // Create
         public IActionResult Create()
         {
-            ViewBag.Products = new SelectList(_context.Products, "Id", "Name");
+            ViewBag.Products = new SelectList(
+                items: _context.Products,
+                dataValueField: "Id",
+                dataTextField: "Name");
+
             return View();
         }
 
-        // POST: Tags/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Slug")] Tag tag, Guid[] Products)
         {
-            if (ModelState.IsValid)
-            {
-                tag.Id = Guid.NewGuid();
-                tag.Products = _context.Products.Where(p => Products.Contains(p.Id)).ToList();
-                //foreach (var id in Products)
-                //    tag.Products.Add(await _context.Products.FirstOrDefaultAsync(p => p.Id == id));
+            if (ModelState.IsValid is false)
+                return View(tag);
 
-                _context.Add(tag);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tag);
+            tag.Id = Guid.NewGuid();
+            tag.Products = _context.Products.Where(p => Products.Contains(p.Id)).ToList();
+
+            _context.Add(tag);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Tags/Edit/5
+        // Edit
         public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tag = await _context.Tags.FindAsync(id);
+
             if (tag == null)
-            {
                 return NotFound();
-            }
+
             return View(tag);
         }
 
-        // POST: Tags/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Slug")] Tag tag)
         {
             if (id != tag.Id)
-            {
                 return NotFound();
+
+            if (ModelState.IsValid is false)
+                return View(tag);
+
+            try
+            {
+                _context.Update(tag);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (_context.Tags.Any(t => t.Id == tag.Id) is false)
+                    return NotFound();
+                else throw;
             }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(tag);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TagExists(tag.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(tag);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Tags/Delete/5
+        // Delete
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
-            {
                 return NotFound();
-            }
 
             var tag = await _context.Tags
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (tag == null)
-            {
                 return NotFound();
-            }
 
             return View(tag);
         }
 
-        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             var tag = await _context.Tags.FindAsync(id);
+
             _context.Tags.Remove(tag);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool TagExists(Guid id)
-        {
-            return _context.Tags.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
