@@ -1,7 +1,7 @@
 using Gab.WebAppNet5.Data;
+using Gab.WebAppNet5.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +23,7 @@ namespace Gab.WebAppNet5
 
           services.AddDatabaseDeveloperPageExceptionFilter();
 
-          services.AddDefaultIdentity<IdentityUser>(options =>
+          services.AddDefaultIdentity<User>(options =>
                   options.SignIn.RequireConfirmedAccount = true)
               .AddEntityFrameworkStores<ApplicationDbContext>();
 
