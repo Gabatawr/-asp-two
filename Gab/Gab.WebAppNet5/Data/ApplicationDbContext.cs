@@ -1,4 +1,5 @@
 ﻿using Gab.WebAppNet5.Entities;
+using Gab.WebAppNet5.Entities.School;
 using Gab.WebAppNet5.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,11 @@ namespace Gab.WebAppNet5.Data
 
         public DbSet<Catalog> Catalog { get; set; }
 
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Group> Groups { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
         {
@@ -26,9 +32,9 @@ namespace Gab.WebAppNet5.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Product>()
-                    .HasMany(p => p.Tags)
-                    .WithMany(t => t.Products)
-                    .UsingEntity(b => b.ToTable("ProdTag"));
+                .HasMany(p => p.Tags)
+                .WithMany(t => t.Products)
+                .UsingEntity(b => b.ToTable("ProdTag"));
 
             /*
                 .UsingEntity<Dictionary<string, object>>(
