@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Gab.WebAppNet5.Data;
 using Gab.WebAppNet5.Entities.School;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Gab.WebAppNet5.Controllers
 {
+    [Authorize]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -19,7 +21,7 @@ namespace Gab.WebAppNet5.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Students
-                .Include(s => s.Group);
+                .Include(s => s.Group.Teacher);
 
             return View(await applicationDbContext.ToListAsync());
         }

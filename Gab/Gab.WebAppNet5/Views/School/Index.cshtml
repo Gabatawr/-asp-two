@@ -5,7 +5,14 @@
 }
 
 <h1>Операции со школой</h1>
-
-<a href="/Students"> Студенты </a>
-<a href="/Teachers"> Учителя </a>
-<a href="/Groups"> Группы </a>
+<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Index">Students</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Groups" asp-action="Index">Groups</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Teachers" asp-action="Index">Teachers</a>
+    </li>
+</ul>

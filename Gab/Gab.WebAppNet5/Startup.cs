@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Gab.WebAppNet5.Data;
 using Gab.WebAppNet5.Models;
 using Microsoft.AspNetCore.Builder;
@@ -27,7 +28,10 @@ namespace Gab.WebAppNet5
                   options.SignIn.RequireConfirmedAccount = true)
               .AddEntityFrameworkStores<ApplicationDbContext>();
 
-          services.AddControllersWithViews();
+          services.AddControllersWithViews().AddJsonOptions(x =>
+              x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+          //.AddJsonOptions(x =>
+          // x.JsonSerializerOptions.IgnoreNullValues = true);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
