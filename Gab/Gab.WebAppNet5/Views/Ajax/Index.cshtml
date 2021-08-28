@@ -41,7 +41,7 @@
     <h1 class="display-4">Welcome Ajax</h1>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createTeacherModal">
+<button type="button" id="TeacherCreateBtn" class="btn btn-primary" data-toggle="modal" data-target="#TeacherModal">
     New Teacher
 </button>
 
@@ -62,12 +62,12 @@
     Empty
 </pre>
 
-<div class="modal fade" id="createTeacherModal" tabindex="-1" role="dialog">
+<div class="modal fade" id="TeacherModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Modal title</h5>
-                <button type="button" id="createTeacherBtnClose" class="close" data-dismiss="modal" aria-label="Close">x</button>
+                <button type="button" id="TeacherModalClose" class="close" data-dismiss="modal" aria-label="Close">x</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -76,8 +76,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="createTeacherBtn" class="btn btn-primary">Save changes</button>
+                <button type="button" id="TeacherSaveBtn" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
