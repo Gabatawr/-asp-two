@@ -60,8 +60,10 @@ namespace Gab.WebAppNet5.Controllers.Api
 
         // POST
         [HttpPost]
-        public async Task<ActionResult<Teacher>> PostTeacher(Teacher teacher)
+        public async Task<ActionResult<Teacher>> PostTeacher([FromBody] Teacher teacher)
         {
+            teacher.Id = new Guid();
+
             _context.Teachers.Add(teacher);
             await _context.SaveChangesAsync();
 

@@ -18,20 +18,22 @@ namespace Gab.WebAppNet5
 
         public void ConfigureServices(IServiceCollection services)
         {
-          services.AddDbContext<ApplicationDbContext>(options =>
-              options.UseSqlServer(
-                  Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(
+                    Configuration.GetConnectionString("DefaultConnection")));
 
-          services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
-          services.AddDefaultIdentity<User>(options =>
+            services.AddDefaultIdentity<User>(options =>
                   options.SignIn.RequireConfirmedAccount = true)
               .AddEntityFrameworkStores<ApplicationDbContext>();
 
-          services.AddControllersWithViews().AddJsonOptions(x =>
-              x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-          //.AddJsonOptions(x =>
-          // x.JsonSerializerOptions.IgnoreNullValues = true);
+            services.AddControllersWithViews().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            //.AddJsonOptions(x =>
+            // x.JsonSerializerOptions.IgnoreNullValues = true);
+
+            // services.AddCors();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -55,6 +57,8 @@ namespace Gab.WebAppNet5
 
           app.UseAuthentication();
           app.UseAuthorization();
+
+          // app.UseCors(builder => builder.AllowAnyOrigin());
 
           app.UseEndpoints(endpoints =>
           {

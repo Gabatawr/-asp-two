@@ -1,7 +1,13 @@
 ﻿console.log("Ajax Ready");
 
+// GET: Teachers
+const cleanTable = () =>
+  document.querySelector(".table")
+    .querySelector("tbody").textContent = "";
+
 const createTable = json =>
 {
+  cleanTable();
   json.$values.forEach(t => {
     let td = [
       document.createElement("td"),
@@ -54,7 +60,7 @@ const jsonHighlights = json =>
         return `<span class="${cls}">${match}</span>`;
       });
 
-(async () =>
+const getTeachers = async () =>
 {
   try
   {
@@ -69,4 +75,36 @@ const jsonHighlights = json =>
     console.log(`Error: ${ex.message}`);
     console.log(`Response: ${ex.response}`);
   }
-})();
+};
+
+getTeachers();
+
+// POST: Teachers
+document.getElementById("createTeacherBtn").onclick = async () =>
+{
+  try
+  {
+    const response = await fetch("/api/Teachers",
+    {
+      method: "POST",
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        Name: document.getElementById("Name").value
+      })
+    });
+    document.getElementById("Name").value = "";
+    getTeachers();
+  }
+  catch(ex)
+  {
+    console.log(`Error: ${ex.message}`);
+    console.log(`Response: ${ex.response}`);
+  }
+  finally
+  {
+    document.getElementById("createTeacherBtnClose").click();
+  }
+};
+
