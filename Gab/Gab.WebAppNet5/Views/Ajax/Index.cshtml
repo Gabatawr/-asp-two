@@ -5,13 +5,19 @@
 @section Styles
 {
     <style type="text/css">
-        pre { padding: 5px; margin: 5px; }
+        pre { outline: 1px solid silver; padding: 5px; margin: 5px; }
+        .key { color: darkviolet; }
         .string { color: green; }
-        .number { color: darkorange; }
-        .boolean { color: blue; }
-        .null { color: magenta; }
-        .key { color: red; }
+        .number { color: steelblue; }
+        .boolean { color: blueviolet; }
+        .null { color: gray; }
+        .guid { color: peru; }
     </style>
+}
+
+@section Scripts
+{
+    <script src="js/ajax.js"></script>
 }
 
 <div class="text-center">
@@ -34,68 +40,3 @@
 <pre id="json">
     Empty
 </pre>
-
-<script>
-    console.log('Ajax Ready');
-
-    (async () =>
-    {
-        try
-        {
-            const response = await fetch('/api/Teachers');
-            let json = await response.json();
-
-            json.$values.forEach(t =>
-            {
-                let td = [document.createElement('td'), document.createElement('td')];
-                td[0].textContent = t.name;
-                ['Edit', 'Details', 'Delete'].forEach((action) =>
-                {
-                    let link = document.createElement('a');
-                    link.href = `/Teachers/${action}/${t.id}`;
-                    link.textContent = action;
-
-                    if (td[1].childNodes.length > 0)
-                        td[1].appendChild(document.createTextNode(' | '));
-                    td[1].appendChild(link);
-                });
-
-                let tr = document.createElement('tr');
-                td.forEach(x => tr.appendChild(x));
-
-                document.querySelector('.table')
-                    .querySelector('tbody')
-                    .appendChild(tr);
-            });
-
-            json = JSON.stringify(json, undefined, 4);
-            json = json.replace(/&/g, '&amp;')
-                       .replace(/</g, '&lt;')
-                       .replace(/>/g, '&gt;')
-                       .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
-                           (match) =>
-                           {
-                               let cls = 'number';
-                               if (/^"/.test(match))
-                               {
-                                   if (/:$/.test(match))
-                                       cls = 'key';
-                                   else cls = 'string';
-                               }
-                               else if (/true|false/.test(match))
-                                   cls = 'boolean';
-                               else if (/null/.test(match))
-                                   cls = 'null';
-
-                               return `<span class="${cls}">${match}</span>`;
-                           });
-
-            document.querySelector('#json').innerHTML = json;
-        }
-        catch (ex)
-        {
-            console.log(`Error: ${ex.message}`);
-            console.log(`Response: ${ex.response}`);
-        }
-    })();
-</script>
