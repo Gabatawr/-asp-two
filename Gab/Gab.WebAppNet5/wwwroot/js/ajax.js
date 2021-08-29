@@ -1,49 +1,7 @@
-﻿console.log("Ajax Ready");
-
-// Helpers
+﻿// Helpers
 const cleanTable = () =>
   document.querySelector(".table")
     .querySelector("tbody").textContent = "";
-
-const createTable = json => {
-  cleanTable();
-  json.$values.forEach(t => {
-    let td = [
-      document.createElement("td"),
-      document.createElement("td")
-    ];
-
-    td[0].textContent = t.name;
-    ["Edit", "Details", "Delete"].forEach((action) => {
-      let link = document.createElement("a");
-
-      if (action === "Edit")
-      {
-        link.href = "#";
-        $(link).on("click", () => {
-          $("#TeacherModal").modal("show");
-          document.getElementById("Name").value = t.name;
-          document.getElementById("TeacherSaveBtn")
-            .onclick = async () => { await fetchPostPutHelper("PUT", t.id); }
-        });
-      }
-      else link.href = `/Teachers/${action}/${t.id}`;
-
-      link.textContent = action;
-
-      if (td[1].childNodes.length > 0)
-        td[1].appendChild(document.createTextNode(" | "));
-      td[1].appendChild(link);
-    });
-
-    let tr = document.createElement("tr");
-    td.forEach(x => tr.appendChild(x));
-
-    document.querySelector(".table")
-      .querySelector("tbody")
-      .appendChild(tr);
-  });
-}
 
 const jsonHighlights = json =>
   JSON.stringify(json, undefined, 2)
@@ -70,37 +28,32 @@ const jsonHighlights = json =>
       return `<span class="${cls}">${match}</span>`;
     });
 
-const fetchPostPutHelper = async (method, id = "") => {
+const flexFetch = async (entity, method, id = "") => {
   try {
-    await fetch(`/api/Teachers/${id}`,
+    await fetch(`/api/${entity}/${id}`,
       {
         method: method,
         headers:
         {
           'Content-Type': "application/json"
         },
-        body: JSON.stringify(
-        {
-          Id: id === "" ? "00000000-0000-0000-0000-000000000000" : id,
-          Name: document.getElementById("Name").value
-        })
+        body: createBody()
       });
-    document.getElementById("Name").value = "";
-    getTeachers();
+    GetEntity(entity);
   }
   catch (ex) {
     console.log(`Error: ${ex.message}`);
     console.log(`Response: ${ex.response}`);
   }
   finally {
-    document.getElementById("TeacherModalClose").click();
+    document.getElementById("ModalCloseBtn").click();
   }
 }
 
-// GET: Teachers
-const getTeachers = async () => {
+// GET
+const GetEntity = async (entity) => {
   try {
-    const response = await fetch("/api/Teachers");
+    const response = await fetch(`/api/${entity}`);
     let json = await response.json();
 
     createTable(json);
@@ -112,12 +65,10 @@ const getTeachers = async () => {
   }
 };
 
-getTeachers();
-
-// POST: Teacher
-document.getElementById("TeacherCreateBtn")
-  .addEventListener("click", event =>
-  {
-    document.getElementById("TeacherSaveBtn")
-      .onclick = async () => { await fetchPostPutHelper("POST"); }
+// POST
+document.getElementById("NewEntityBtn")
+  .addEventListener("click", event => {
+    createTeacherList();
+    document.getElementById("ModalSaveBtn")
+      .onclick = async () => { await flexFetch("POST"); }
   });

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Gab.WebAppNet5.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class StudentsController : Controller
     {
         private readonly ApplicationDbContext _context;

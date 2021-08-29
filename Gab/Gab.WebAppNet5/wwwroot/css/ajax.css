@@ -1,0 +1,29 @@
+﻿pre {
+  outline: 1px solid silver;
+  padding: 5px;
+  margin: 5px;
+}
+
+.key {
+  color: darkviolet;
+}
+
+.string {
+  color: green;
+}
+
+.number {
+  color: steelblue;
+}
+
+.boolean {
+  color: blueviolet;
+}
+
+.null {
+  color: gray;
+}
+
+.guid {
+  color: peru;
+}

@@ -8,9 +8,16 @@ namespace Gab.WebAppNet5.Controllers
 {
     public class AjaxController : Controller
     {
-        public IActionResult Index()
+        public IActionResult Groups()
         {
-            return View();
+            ViewBag.Entity = "Groups";
+            return View("Index");
+        }
+
+        public IActionResult Teachers()
+        {
+            ViewBag.Entity = "Teachers";
+            return View("Index");
         }
     }
 }

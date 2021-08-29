@@ -64,7 +64,7 @@ namespace Gab.WebAppNet5
           {
               endpoints.MapControllerRoute(
                   name: "default",
-                  pattern: "{controller=Ajax}/{action=Index}/{id?}");
+                  pattern: "{controller=Ajax}/{action=Groups}/{id?}");
               endpoints.MapRazorPages();
           });
         }

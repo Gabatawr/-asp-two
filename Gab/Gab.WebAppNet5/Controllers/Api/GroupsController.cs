@@ -20,7 +20,10 @@ namespace Gab.WebAppNet5.Controllers.Api
         // GET: Groups
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Group>>> GetGroups() =>
-            await _context.Groups.ToListAsync();
+            await _context.Groups
+                .Include(g => g.Students)
+                .Include(g => g.Teacher)
+                .ToListAsync();
 
         // GET: Group
         [HttpGet("{id}")]
@@ -38,7 +41,7 @@ namespace Gab.WebAppNet5.Controllers.Api
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGroup(Guid id, Group group)
         {
-            if (id != group.Id)
+            if (id != group.Id || _context.Teachers.Any(t => t.Id == group.TeacherId) is false)
                 return BadRequest();
 
             _context.Entry(group).State = EntityState.Modified;
@@ -59,7 +62,7 @@ namespace Gab.WebAppNet5.Controllers.Api
 
         // POST
         [HttpPost]
-        public async Task<ActionResult<Group>> PostGroup(Group group)
+        public async Task<ActionResult<Group>> PostGroup([FromBody] Group group)
         {
             _context.Groups.Add(group);
             await _context.SaveChangesAsync();

@@ -13,6 +13,5 @@ namespace Gab.WebAppNet5.Entities.School
 
         public Guid TeacherId { get; set; }
         public Teacher Teacher { get; set; }
-
     }
 }

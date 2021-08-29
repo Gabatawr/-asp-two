@@ -21,7 +21,8 @@ namespace Gab.WebAppNet5.Controllers.Api
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Teacher>>> GetTeachers() =>
             await _context.Teachers
-                .Include(t => t.Group.Students).ToListAsync();
+                .Include(t => t.Group.Students)
+                .ToListAsync();
 
         // GET Teacher
         [HttpGet("{id}")]
