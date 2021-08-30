@@ -1,8 +1,6 @@
 ﻿const createTeacherList = async () =>
 {
-  let selector = document.getElementById("TeacherIdList");
   let json;
-
   try {
     const response = await fetch("/api/Teachers");
     json = await response.json();
@@ -16,7 +14,9 @@
     let option = document.createElement("option");
     option.textContent = teacher.name;
     option.value = teacher.id;
-    selector.appendChild(option);
+
+    document.getElementById("TeacherIdList")
+      .appendChild(option);
   });
 }
 
