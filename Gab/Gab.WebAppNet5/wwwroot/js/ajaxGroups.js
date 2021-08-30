@@ -78,7 +78,7 @@ const createTable = json => {
   });
 }
 
-const createBody = () => {
+const createBody = (id) => {
   let selector = document.getElementById("TeacherIdList");
   let teacherId = selector.selectedIndex === -1
     ? "00000000-0000-0000-0000-000000000000"
@@ -99,3 +99,10 @@ $('#Modal').on('hide.bs.modal', (e) => {
 
 GetEntity("Groups");
 
+// POST
+document.getElementById("NewEntityBtn")
+  .addEventListener("click", event => {
+    createTeacherList();
+    document.getElementById("ModalSaveBtn")
+      .onclick = async () => { await flexFetch("Groups", "POST"); }
+  });

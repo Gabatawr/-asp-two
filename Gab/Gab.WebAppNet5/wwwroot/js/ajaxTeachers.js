@@ -41,7 +41,7 @@
   });
 }
 
-const createBody = () => {
+const createBody = (id) => {
   return JSON.stringify(
   {
     Id: id === "" ? "00000000-0000-0000-0000-000000000000" : id,
@@ -54,3 +54,10 @@ $('#Modal').on('hide.bs.modal', (e) => {
 });
 
 GetEntity("Teachers");
+
+// POST
+document.getElementById("NewEntityBtn")
+  .addEventListener("click", event => {
+    document.getElementById("ModalSaveBtn")
+      .onclick = async () => { await flexFetch("Teachers", "POST"); }
+  });

@@ -37,7 +37,7 @@ const flexFetch = async (entity, method, id = "") => {
         {
           'Content-Type': "application/json"
         },
-        body: createBody()
+        body: createBody(id)
       });
     GetEntity(entity);
   }
@@ -65,10 +65,3 @@ const GetEntity = async (entity) => {
   }
 };
 
-// POST
-document.getElementById("NewEntityBtn")
-  .addEventListener("click", event => {
-    createTeacherList();
-    document.getElementById("ModalSaveBtn")
-      .onclick = async () => { await flexFetch("POST"); }
-  });
